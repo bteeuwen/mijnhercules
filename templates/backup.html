@@ -1,0 +1,24 @@
+{% if not user.is_authenticated %}
+<div class="container">
+		<div class="content">
+			<div class="row">
+				<div class="login-form">
+					<form action='/accounts/login/' method='post'>
+						{% csrf_token %}
+						<fieldset>
+							<div class="clearfix">
+								<input type="text" placeholder="Username" name="username" id="username">
+							</div>
+							<div class="clearfix">
+								<input type="password" placeholder="Password" name="password" id="password">
+							</div>
+							<button class="btn primary" type="submit" value="login">Sign in</button>
+							<input type="hidden" name="next" value="{{ request.get_full_path }}" />
+						</fieldset>
+					</form>
+					
+				</div>
+			</div>
+		</div>
+	</div> <!-- /container -->
+{% endif %}

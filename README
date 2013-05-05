@@ -1,0 +1,29 @@
+git clone
+
+heroku create
+
+set global variables heroku.
+only user set variables are listed here:
+
+=== [app-name] Config Vars
+AWS_ACCESS_KEY_ID:    
+AWS_SECRET_ACCESS_KEY:
+CLOUDAMQP_URL:                                  // heroku; set automatically when $ heroku addons:add cloudamqp
+DJANGO_SETTINGS_MODULE:
+EMAIL_HOST_PASSWORD:
+MAILCHIMP_API:    
+MAILCHIMP_LIST_ZV:
+SECRET_KEY:
+
+
+DATABASE initialization
+
+syncdb
+
+south migrations:
+make sure apps (e.g.guardian) is migrated initially.
+
+
+
+git push
+

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  {% if form.errors %}
+    <p class="error">Je had zojuist kunnen inloggen door je gebruikersnaam en wachtwoord in te vullen in de velden rechtsbovenaan onder het plaatje. Hier kan dat inderdaad ook:</p>
+  {% endif %}
+
+  <form action="" method="post">{% csrf_token %}
+    <label for="username">Gebruikersnaam:</label>
+    <input type="text" name="username" value="" id="username">
+    <label for="password">Paswoord:</label>
+    <input type="password" name="password" value="" id="password">
+
+    <input type="submit" value="login" />
+    <input type="hidden" name="next" value="{{ next|escape }}" />
+  </form>
+
+{% endblock %}
+
+{% block subcontent %} 
+{% endblock %}

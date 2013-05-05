@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if player_list %}
+<h1>{{team}}</h1>
+<h3>Aanvoerder: {{team.captain}}</h3>
+<p>{{ team }} bevat {{ pl_list|length }} spelers.</p>
+<ul>
+    {% for pl in pl_list %}
+	<li>{{ pl }} <a href="/speler/wijzigen/{{ pl.id }}/">(edit)</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No players are available.</p>
+{% endif %}
+
+{% endblock %}
+
+{% block subcontent %} 
+{% if matchprogram %}
+      <h3>Programma</h3>
+      <table class="table table-bordered table-condensed">
+        <tbody>
+          {% for match in matchprogram %}
+          <tr>
+            <td>
+              <a href="/wedstrijd/{{ match.id }}">{{match}}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <h2>Programma</h2>
+      <p>Er zijn op dit moment geen wedstrijden gepland.</p>
+      {% endif %}
+{% endblock %} 

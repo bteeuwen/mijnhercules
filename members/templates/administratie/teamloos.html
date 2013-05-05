@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %} Teamlozen {% endblock %}
+
+{% block content %}
+<h1>Spelers zonder team</h1>
+{% if team_less %}
+Er zijn momenteel {{ team_less|length }} spelers zonder een team adres.
+<ul>
+    {% for player in team_less %}
+	<li><a href="/admin/members/player/{{ player.id }}/">{{ player }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No players are available.</p>
+{% endif %}
+
+{% endblock %}

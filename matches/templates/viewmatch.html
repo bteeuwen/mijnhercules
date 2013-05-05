@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load l10n %}
+    
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+    <h3>{{ match.teamhome }} - {{ match.teamaway }}</h3>
+    <h5>{{match.date|localize}}, {{match.location}}</h5>
+            
+          {% for t in hercules %}
+          
+              {% if t.captain %}
+    <p>          Aanvoerder: {{t.captain}} <a href="mailto:{{ t.captain.email }}?subject=Invaller voor {{match}}&body=Hoi {{t.captain}}, ik kan invallen voor de wedstrijd {{match}} op {{match.location}}. Groeten, {{player}} ({{player.cellphone}})">({{t.captain.email}}</a>; {{t.captain.cellphone}})
+              {%endif%}</p>
+
+          {% endfor %}
+    
+    Aantal invallers benodigd: {{ match.substitutesneeded }}
+  
+{% for t in hercules %}
+  <a href='{% url 'matches.views.offerSubstitute' match.pk t.pk player.pk %}'><p><button class="btn btn-large btn-primary" type="button">{{t}}.. Count me in!</button></p> </a>
+{%endfor%}
+
+
+    <h3>Invaller shortlist</h3>
+  {% if substituteoptions %}
+{% for t, players in substitutes.items %}
+    <h5>{{ t }}</h5>
+    {% for s in players %}
+    <ul><li>{{ s.full_name}} <a href='mailto:{{s.email}}'>({{s.email}})</a> - {{s.cellphone}} 
+        {% if player.pk == s.pk %} <a href='{% url 'matches.views.cancelSubstituteOffer' match.pk t.pk player.pk %}'><button class="btn btn-mini btn-primary" type="button">Annuleer invallen</button> </a> {% endif %}
+      </li>   </ul>{%endfor%}
+{% endfor %}
+
+  {% else %}
+  <p> Er zijn nog geen invallers. Help dit team uit de brand!</p>
+  {% endif %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+{% for s in substitutes %}    
+    <ul>
+    <li>{{ s.full_name}} <a href='mailto:{{s.email}}'>({{s.email}})</a> - {{s.cellphone}} {% if player.pk == s.pk %} <a href='/wedstrijd/invallen/tochmaarniet/{{match.pk}}/{{player.pk}}'><button class="btn btn-mini btn-primary" type="button">Annuleer invallen</button> </a> {% endif %}</li>
+    </ul>
+  {% endfor %}  
+  

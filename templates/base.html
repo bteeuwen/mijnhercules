@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+<head>
+
+  <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+  <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38387681-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<script type="text/javascript">
+  var uvOptions = {};
+  (function() {
+    var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+    uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/jJ5GKtWoQEB9vPzxPgdU5A.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+  })();
+</script>
+
+  <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
+       #background: url(http://www.usvhercules.nl/gfx/achtergrond.gif);
+       margin-top: -30px;
+       margin-left: 30px;
+      }
+      
+      .container {
+        width: 300px;
+      }
+
+      /* The white background content wrapper */
+      .container > .content {
+        background-color: #fff;
+        padding: 20px;
+        margin: 0 -20px; 
+        -webkit-border-radius: 10px 10px 10px 10px;
+           -moz-border-radius: 10px 10px 10px 10px;
+                border-radius: 10px 10px 10px 10px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+    .login-form {
+    margin-left: 65px;
+    }
+  
+    legend {
+    margin-right: -50px;
+    font-weight: bold;
+      color: #404040;
+    }
+
+    </style>
+
+</head>
+
+<body>
+  <div class='row'>
+    <div class='span9 offset1'>
+      <a href='/'><img src="{{ STATIC_URL }}h1882banner.jpg" border="0" class='img-rounded'></a></div>
+  </div>
+
+  <div class='row'>
+    {% if user.is_authenticated %}
+      {% if user.is_staff %}
+      <div class='span6 offset4'>
+        {% else%}
+        <div class='span5 offset5'>
+        {% endif %}
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="/">Home</a></li>
+            <li><a href="/wedstrijden/">Mijn wedstrijden</a></li>
+
+        </li>
+          {% if user.is_staff %}
+          <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" id="administratie_menu">Administratie<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/teams">Teams</a></li>
+            <li><a href="{% url 'matches.views.importMatch' %}">Wedstrijden</a></li>
+            <li><a href="/speler/sportlink">Spelers SL sync</a></li>
+            <li><a href="/administratie/emaillozen">Email hiaten</a></li>
+            <li><a href="/administratie/teamlozen">Team hiaten</a></li>
+            <li><a href="/administratie/aanvoerderlozen">Aanvoerder hiaten</a></li>
+            <li><a href="/administratie/mailchimp">Mailchimp hiaten</a></li>
+            <li id="adminlink_menu"><a href="/admin/">Admin</a></li>
+            <li><a href="/wedstrijden/kalender/futsal">Wedstrijdkalender</a></li>
+          </ul>
+        </li>
+        {% endif %}
+
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" id="user_menu"> 
+            <i class="icon-user"></i>
+            {{ user.username }} <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/speler/wijzigen">Profiel</a></li>
+          </ul>
+        </li>
+      
+      <li><a href="/accounts/logout/?next=/">Uitloggen</a></li>
+      </ul>
+      
+      {% else %}
+      <div class='span8 offset4'>
+        <ul class="nav nav-tabs">
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="http://www.usvhercules.nl">USV Hercules</a></li>
+      <form class="form-inline" action='/accounts/login/' method='post'>
+        {% csrf_token %}
+        <input type="text" class="input-small" placeholder="Username" name="username" id="username">
+        <input type="password" class="input-small" placeholder="Password" name="password" id="password">
+        <button type="submit" class="btn" type="submit" value="login" id='submit'>Sign in</button>
+        <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+        <a href="/accounts/password/reset/">paswoord reset</a>
+      </form>
+      </ul>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+
+
+  <div class='row'>
+    <div class="span6 offset1">
+      {% block content %}
+        {% if user.is_authenticated %}
+        {% if player_list %}
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>
+              <h1>{{ player.team_member }}</h1>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for pl in player_list %}
+          <tr>
+            <td>
+              {{ pl }} - {{pl.email}}<a href="/speler/wijzigen/{{ pl.id }}/"> (edit)</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No players are available.</p>
+      {% endif %}
+
+        {% else %}   
+
+        <h1>MijnHercules Pilot</h1>
+        Welkom bij MijnHercules, een experiment van het zaalvoetbal bestuur om de kwaliteit van de informatievoorziening ledenadministratie 
+        <h2>Nog geen account?</h2>
+        <h2></h2>
+        {% endif %}
+        {% endblock %}
+    </div>
+
+    <div class="span3">
+      {% block subcontent %}
+      {% if user.is_authenticated %}
+      <h2>{{ player }}</h2>
+      {{player.role}}, {{player.age}}, {{player.gender}}.
+      <br>
+      Hercules administratie nummer: {{player.herculesnr}}<br>
+      Lid sinds: {{player.herculesnr.membersince}}<br>
+      Lidmaatschap type: {{player.herculesnr.subscription}}<br>
+      KNVB pas nummer: {{player.knvbnr}}<br>
+      Pas geldig t/m {{ pasverloop|date:"d F Y" }}<BR>
+      {% if player.knvbnr.passtatus != "Speler" %}
+      Pas status: {{player.knvbnr.passtatus}}
+      {% endif %}
+      <br>
+      {% if not player.substitutewilling %}
+      Wil je <a href="/speler/wijzigen/{{ player.id }}">wel/niet invallen bij anderen?</a>
+      {% endif %}
+      <br>
+      
+      <br>
+
+      <h3>Programma</h3>
+      {% if matches %}
+      <table class="table table-bordered table-condensed">
+        <tbody>
+          {% for match in matches %}
+          <tr>
+            <td>
+              <a href="{% url 'matches.views.editMatch' match.id %}">{{match}}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+      <p>Er zijn op dit moment geen wedstrijden gepland.</p>
+      {% endif %}
+      <p><a href="/wedstrijden/kalender/{{team.id}}">(Wedstrijdkalender downloaden)</a></p>
+
+      {% if matchessubsneeded %}
+      <h3>Invallers gezocht</h3>
+      <table class="table table-bordered table-condensed">
+        <tbody>
+          {% for match in matchessubsneeded %}
+          <tr>
+            <td>
+              <a href="{% url 'matches.views.viewMatch' match.id %}">{{match}}</a> ({{match.substitutesneeded}}x)
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <h2>Invallers</h2>
+      <p>Er worden op dit moment geen invallers gezocht.</p>
+      {% endif %}
+
+      {% else %}   
+      {% if allmatches %}
+      <h3>Programma</h3>
+      <table class="table table-bordered table-condensed">
+        <tbody>
+          {% regroup allmatches by date|date:"d-m-Y" as matches_per_day %}
+          {% for days in matches_per_day|slice:"5:"  %}
+          <b>{{days.grouper}}</b>
+          {% for match in days.list %}
+          <li>{{match.teamhome}} - {{match.teamaway}}, {{match.location}}</li>
+          {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Geen wedstrijden beschikbaar.</p>
+      {% endif %}
+      {% endif %}
+
+    </div>
+{% endblock %}
+  </div>
+  
+  </div>
+  <div class='row'>
+    <div class='span9 offset1'>
+      <img src="{{ STATIC_URL }}130106stories_mijnhercules.jpg" alt="some_text" class="img-rounded"></div>
+
+  </div>
+</body>
+</html>

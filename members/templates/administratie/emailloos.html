@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %} Emaillozen {% endblock %}
+
+{% block content %}
+<h1>Email adres hiaten
+
+</h1>
+{% if email_less %}
+Er zijn momenteel met {{ email_less|length }} spelers zonder een email adres.
+<ul>
+    {% regroup email_less by team_member as players_by_team %}
+    {% for team in players_by_team %}
+    <li><b>{{ team.grouper }}</b></li>
+
+    {% for player in team.list %}
+	<li><a href="/admin/members/player/{{ player.id }}/">{{ player }}</a></li>
+    {% endfor %}
+    {% endfor %}
+</ul>
+{% else %}
+<p>No players are available.</p>
+{% endif %}
+
+{% endblock %}

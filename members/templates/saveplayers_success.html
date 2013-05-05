@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Spelers geimporteerd{% endblock %}
+
+{% block pagetitle %}Spelers geimporteerd{% endblock %}
+
+{% block content %}
+<p>Spelers geimporteerd.</p>
+
+  {% if substituteoptions %}
+{% for t, players in substitutes.items %}
+    <h5>{{ t }}</h5>
+    {% for s in players %}
+    <ul><li>{{ s.full_name}} <a href='mailto:{{s.email}}'>({{s.email}})</a> - {{s.cellphone}} 
+        {% if player.pk == s.pk %} <a href='{% url 'matches.views.cancelSubstituteOffer' match.pk t.pk player.pk %}'><button class="btn btn-mini btn-primary" type="button">Annuleer invallen</button> </a> {% endif %}
+      </li>   </ul>{%endfor%}
+{% endfor %}
+
+  {% else %}
+  <p> Yo.</p>
+  {% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %} Aanvoerderlozen {% endblock %}
+
+{% block content %}
+<h1>Aanvoerder hiaten
+
+</h1>
+{% if captain_less %}
+Er zijn momenteel met {{ captain_less|length }} teams zonder een aanvoerder.
+<ul>
+    {% for team in captain_less %}
+	<li><a href="/admin/members/team/{{team.id}}">{{ team }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Geen teams zonder aanvoerder. Goed bezig bestuurder!</p>
+{% endif %}
+
+{% endblock %}

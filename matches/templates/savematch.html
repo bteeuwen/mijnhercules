@@ -1,0 +1,65 @@
+  {% extends "base.html" %}
+
+{% block content %}
+    <h1>Wedstrijden</h1>
+    Rechts zie je de geplande wedstrijden. Jes kunt nieuwe wedstrijden importeren.
+
+    <h2>Importeren</h2>
+
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
+
+    <!-- Upload form. Note enctype attribute! -->
+        <form action='' method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+            <p>
+                {{ form.docfile.errors }}
+                {{ form.docfile }}
+            </p>
+            Je kunt hier wedstrijden importeren. Zorg ervoor dat je de wedstrijden uit Sportlink hebt geimporteerd. Je moet deze volgorde van kolommen exact aanhouden: <br>
+            <li>Wedstrijdnummer </li>
+            <li>Wedstrijddatum </li>
+            <li>Aanvangstijd</li>
+            <li>Aanduiding  </li>
+            <li>Thuis team  </li>
+            <li>Uit team    </li>
+            <li>Sport omschrijving  </li>
+            <li>Veld    </li>
+            <li>Accommodatie naam   </li>
+            <li>Plaats  </li>
+            <li>Thuisscore  </li>
+            <li>Uitscore    </li>
+            <li>Bondsofficials</li>
+            
+            <h4>Bestand uploaden</h4>
+            <table>
+            {{ form.as_table }}
+        </table>
+            <p><input id="Uploaden" type="submit" value="Uploaden" /></p>
+        </form>
+    {% endblock %}
+
+    {% block subcontent %} 
+    {% if matches %}
+      <h3>Programma</h3>
+      <table class="table table-bordered table-condensed">
+        <tbody>
+          {% regroup matches by date|date:"d-m-Y" as matches_per_day %}
+          {% for days in matches_per_day|slice:"3"  %}
+          <b>{{days.grouper}}</b>
+          {% for match in days.list %}
+          <li><a href="/wedstrijd/{{ match.id }}">{{match.teamhome}} - {{match.teamaway}}, {{match.location}}</a></li>
+          {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+      <h4>Bekijk<a href="/admin/members/match/"> alle wedstrijden</a>..</h4>
+      {% else %}
+      <p>Geen wedstrijden beschikbaar.</p>
+      {% endif %}
+    {% endblock %} 

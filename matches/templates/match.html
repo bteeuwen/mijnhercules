@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load l10n %}
+
+    <h3>{{ match.teamhome }} - {{ match.teamaway }}</h3>
+    <h5>{{match.date|localize}}, {{match.location}}</h5>
+    <a href='{% url 'matches.views.addMatchPresence' match.pk team.pk player.pk %}'><p><button class="btn btn-large btn-primary" type="button">{{t}}Ik ben erbij!</button></p> </a>
+    <h3>Aanwezigen</h3>
+  {% if presentplayers %}
+{% for s in presentplayers %}
+
+    <ul>
+    <li>{{ s.full_name}} <a href='mailto:{{s.email}}'>({{s.email}})</a> - {{s.cellphone}} {% if player.pk == s.pk %} <a href='{% url 'matches.views.removeMatchPresence' match.pk team.pk player.pk %}'><button class="btn btn-mini btn-primary" type="button">Ik kan toch niet</button> </a> {% endif %}</li>
+    </ul>
+    {%endfor%}
+
+  {% else %}
+  <p> Er zijn nog geen aanwezige spelers.</p>
+  {% endif %}
+
+    <h3>Invallers nodig?</h3>
+    
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+<h5>Invallerslijst</h5>
+      {% if substitutes %}
+      <table class="table table-bordered table-condensed">
+        <tbody>
+          {% for sub in substitutes %}
+          <tr>
+            <td>
+              <a href="mailto:{{sub.email}}?subject=Invallers gezocht voor {{match}}&body=Hoi {{sub}}, voor de wedstrijd {{match}} op {{match.location}} zoeken we {{match.substitutesneeded}} invallers. Kun jij contact met me opnemen als je kunt spelen? Groet, {{name}} ({{player.cellphone}})">{{sub}}</a> - {{sub.cellphone}} ({{sub.team_member}}, {{sub.age|date:"Y"}}, {{sub.team_member.level}}e klasse{% if sub.role %}, {{sub.role}}{%endif%})
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Geen invallers beschikbaar.</p>
+      {% endif %}
+
+{% endblock %}
+

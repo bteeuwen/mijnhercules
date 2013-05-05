@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}Go Teams{% endblock%}
+
+{% block content %}
+{% if team_list %}
+<p>Er zijn momenteel {{ team_list|length }} teams.</p>
+<ul>
+    {% for team in team_list %}
+	<li><a href="/teams/{{ team.number }}/">{{ team.number }}{% if team.captain %}, {{team.captain}}{% endif %}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No teams are available.</p>
+{% endif %}
+
+{% endblock %}

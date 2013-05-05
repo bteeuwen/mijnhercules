@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if mymatches %}
+      <h3>Programma</h3>
+      <table class="table table-bordered table-condensed">
+        <tbody>
+          {% for match in mymatches %}
+          <tr>
+            <td>
+              <a href="{% url 'matches.views.editMatch' match.id %}">{{match}}</a>
+            </td>
+            <td>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <h2>Wedstrijden</h2>
+      <p>Er zijn op geen wedstrijden.</p>
+      {% endif %}
+
+
+
+{% endblock %} 

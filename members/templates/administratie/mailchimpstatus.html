@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %} Mailchimp nieuwsbrief status {% endblock %}
+
+{% block content %}
+<h1>Spelers met iets raars</h1>
+
+{% for player, status in exceptions.items %}
+    <p>{{ player }} = {% for s in status %}{{s}}{%endfor%}{% endfor %}</p>
+
+Er zijn momenteel {{ emaillesscount }} spelers zonder een email adres.
+
+{% endblock %}

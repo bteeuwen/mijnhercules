@@ -1,0 +1,11 @@
+activate
+backup
+scripts/logs/sport*
+db.sql
+createadmin.py
+env/
+*.pyc
+mijnhercules/local_settings.py
+data
+members/migrations_backup
+.elasticbeanstalk/

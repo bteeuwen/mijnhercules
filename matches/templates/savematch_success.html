@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Wedstrijden geimporteerd{% endblock %}
+
+{% block pagetitle %}Wedstrijden geimporteerd{% endblock %}
+
+{% block content %}
+
+{% if savedmatches %}
+Er zijn {{ savedmatches|length }} wedstrijden geimporteerd:
+<ul>
+    {% for match in savedmatches %}
+    <li>{{ match }}</li>
+    {% endfor %}
+</ul>
+
+{% elif fail %}
+Er is iets mis gegaan. Stuur je bestand even naar de systeembeheerder. 
+
+{% else %}
+<p>Geen nieuwe wedstrijden geimporteerd.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block pagetitle %} Go Players {% endblock %}
+
+{% block players %}
+
+{% if error %}
+        <p style="color: red;">Please submit a search term.</p>
+    {% endif %}
+    <form action="/search/" method="get">
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
+{% if player_list %}
+We zijn momenteel met {{ player_list|length }} spelers.
+<ul>
+    {% for player in player_list %}
+	<li><a href="/speler/{{ player.last_name }}/">{{ player.first_name }} {{ player.suffix }} {{ player.last_name }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No players are available.</p>
+{% endif %}
+
+{% endblock %}
